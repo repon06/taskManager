@@ -31,7 +31,7 @@ class DeleteTodoTest extends BaseTest {
                 .spec(getSpecification())
                 //.auth().preemptive().basic("admin", "admin")
                 .when()
-                .delete("/todos/" + task.getId())
+                .delete("/" + task.getId())
                 .then().log().all()
                 .statusCode(HttpStatus.SC_NO_CONTENT);
 

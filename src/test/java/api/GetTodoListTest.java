@@ -34,7 +34,7 @@ class GetTodoListTest extends BaseTest {
                 .param("offset", defaultOffset)
                 .param("limit", defaultLimit)
                 .when()
-                .get("/todos")
+                .get()
                 .then().log().all()
                 .statusCode(HttpStatus.SC_OK)
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath(checkSchema("getTodoListSchema.json")))

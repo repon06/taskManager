@@ -5,7 +5,7 @@
     "container": 4242
   },
   "urls": {
-    "base": "http://localhost:8080",
+    "base": "http://localhost:8080/todos",
     "websocket": "ws://localhost:8080/ws"
   },
   "credentials": {

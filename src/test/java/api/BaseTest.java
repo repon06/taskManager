@@ -87,7 +87,7 @@ public class BaseTest {
         return Arrays.stream(given()
                 .spec(getSpecification())
                 .when()
-                .get("/todos")
+                .get()
                 .then().log().all()
                 .statusCode(HttpStatus.SC_OK)
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath(checkSchema("getTodoListSchema.json")))

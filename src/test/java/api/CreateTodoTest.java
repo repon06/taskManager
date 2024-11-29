@@ -13,9 +13,9 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -47,7 +47,7 @@ class CreateTodoTest extends BaseTest {
                 .spec(getSpecification())
                 .body(newTask)
                 .when()
-                .post("/todos")
+                .post()
                 .then().log().all()
                 .statusCode(HttpStatus.SC_CREATED);
 
@@ -66,7 +66,7 @@ class CreateTodoTest extends BaseTest {
                 .spec(getSpecification())
                 .body(newTask)
                 .when()
-                .post("/todos")
+                .post()
                 .then().log().all()
                 .statusCode(HttpStatus.SC_CREATED);
 
@@ -86,7 +86,7 @@ class CreateTodoTest extends BaseTest {
                 .spec(getSpecification())
                 .body(newTask)
                 .when()
-                .post("/todos")
+                .post()
                 .then().log().all()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
 
