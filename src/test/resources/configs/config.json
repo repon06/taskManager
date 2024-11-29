@@ -1,6 +1,0 @@
-{
-  "baseUrl": "http://localhost:8080",
-  "wcUrl": "ws://localhost:4242/ws",
-  "login": "admin",
-  "password": "admin"
-}

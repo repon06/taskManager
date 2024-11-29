@@ -1,0 +1,15 @@
+{
+  "imagePath": "/Users/repon/Desktop/work/repon/BHFT/tester-task/todo-app.tar",
+  "ports": {
+    "host": 8080,
+    "container": 4242
+  },
+  "urls": {
+    "base": "http://localhost:8080",
+    "websocket": "ws://localhost:8080/ws"
+  },
+  "credentials": {
+    "username": "admin",
+    "password": "admin"
+  }
+}
