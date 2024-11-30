@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
-    private long id;
+    private Long id;
     private String text;
     private boolean completed;
 }
