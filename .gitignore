@@ -35,3 +35,5 @@ build
 **/.vscode
 **/bin
 /gradle/wrapper/gradle-wrapper.jar
+/allure-results/*
+/gradle/*
