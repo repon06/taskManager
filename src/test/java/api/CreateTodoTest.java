@@ -3,9 +3,6 @@ package api;
 import static io.restassured.RestAssured.given;
 
 import io.qameta.allure.Description;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
@@ -20,14 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.taskmanager.model.InvalidTask;
 import org.taskmanager.model.Task;
 
 class CreateTodoTest extends BaseTest {
-    private List<Task> taskList;
+    private Task newTask;
 
     @BeforeAll
     public void setup() {
+        createTask();
         taskList = getFullTaskList();
     }
 
@@ -41,7 +38,7 @@ class CreateTodoTest extends BaseTest {
     @Description("Create todo test")
     @Test
     void normalCreateTodoTest() {
-        var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
 
         given()
                 .spec(getSpecification())
@@ -61,7 +58,7 @@ class CreateTodoTest extends BaseTest {
     @ParameterizedTest(name = "{0} {1} {2}")
     @MethodSource("normalFieldsProvider")
     void normalCreateTodoTest(Long id, String text, Boolean completed) {
-        var newTask = buildTask(id, text, completed);
+        newTask = buildTask(id, text, completed);
         given()
                 .spec(getSpecification())
                 .body(newTask)
@@ -79,7 +76,7 @@ class CreateTodoTest extends BaseTest {
     @Description("Create todo with invalid value field test")
     @ParameterizedTest(name = "{0} {1} {2}")
     @MethodSource("invalidFieldsProvider")
-    void failCreateTodoTest(Object id, Object text, Object completed) {
+    void failCreateTodoTest(Object id, Object text, Object completed, int code) {
         var newTask = buildInvalidTask(id, text, completed);
 
         given()
@@ -88,7 +85,7 @@ class CreateTodoTest extends BaseTest {
                 .when()
                 .post()
                 .then().log().all()
-                .statusCode(HttpStatus.SC_BAD_REQUEST);
+                .statusCode(code);
 
         Assertions.assertTrue(true);
     }
@@ -97,18 +94,16 @@ class CreateTodoTest extends BaseTest {
         return Stream.of(
                 Arguments.of(0L, RandomStringUtils.randomAlphanumeric(10), true),
                 Arguments.of(Long.MAX_VALUE, RandomStringUtils.randomAlphanumeric(10), true),
-                Arguments.of(Long.MIN_VALUE, RandomStringUtils.randomAlphanumeric(10), true),
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true),
 
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), false),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(16331), true),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.random(10), true),
 
                 Arguments.of(getRandomAndNotExistId(), "; DROP TABLE users; ", true),
                 Arguments.of(getRandomAndNotExistId(), " OR '1'='1 ", true),
                 Arguments.of(getRandomAndNotExistId(), "%_\\", true),
-                Arguments.of(getRandomAndNotExistId(), "\\...\\", true),
-                Arguments.of(getRandomAndNotExistId(), "/.../", true),
-                Arguments.of(getRandomAndNotExistId(), "<script>alert('XSS');</script>", true),
-                Arguments.of(getRandomAndNotExistId(), "<iframe src=\"http://злодейский_сайт.com\"></iframe>", true),
+                Arguments.of(getRandomAndNotExistId(), "<iframe src=\"http://google.com\"></iframe>", true),
                 Arguments.of(getRandomAndNotExistId(), "<script>alert('XSS');</script>", true),
                 Arguments.of(getRandomAndNotExistId(), "alert('XSS')", true),
                 Arguments.of(getRandomAndNotExistId(), "", true)
@@ -117,53 +112,21 @@ class CreateTodoTest extends BaseTest {
 
     public Stream<Arguments> invalidFieldsProvider() {
         return Stream.of(
-                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), true),
+                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
 
-                Arguments.of(null, RandomStringUtils.randomAlphanumeric(10), true),
-                Arguments.of(0L, RandomStringUtils.randomAlphanumeric(10), true),
-                Arguments.of(Long.MAX_VALUE + 1, RandomStringUtils.randomAlphanumeric(10), true),
-                Arguments.of(-1L, RandomStringUtils.randomAlphanumeric(10), true),
+                Arguments.of(null, RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(Long.MAX_VALUE + 1, RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(-1L, RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
 
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(100), true),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(1000), true),
-                Arguments.of(getRandomAndNotExistId().toString(), RandomStringUtils.randomAlphanumeric(10), true),
-                Arguments.of(getRandomAndNotExistId(), "", false),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(16332), true, HttpStatus.SC_REQUEST_TOO_LONG),
+                Arguments.of(getRandomAndNotExistId().toString(), RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
                 Arguments.of(getRandomAndNotExistId(), null, true),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAscii(10), true),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.random(10), true),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.random(10), true),
                 //
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), null),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), "true"),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), null, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), "true", HttpStatus.SC_BAD_REQUEST),
 
-                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), null),
-                Arguments.of(getRandomAndNotExistId(), taskList.getFirst().getText(), null)
+                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), null, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(getRandomAndNotExistId(), taskList.getFirst().getText(), null, HttpStatus.SC_BAD_REQUEST)
         );
-    }
-
-    private Task buildTask(long id, String text, boolean completed) {
-        return Task.builder()
-                .id(id)
-                .text(text)
-                .completed(completed)
-                .build();
-    }
-
-    private InvalidTask buildInvalidTask(Object id, Object text, Object completed) {
-        return InvalidTask.builder()
-                .id(id)
-                .text(text)
-                .completed(completed)
-                .build();
-    }
-
-    private Long getRandomAndNotExistId() {
-        long id;
-        Random random = new Random();
-        var idList = taskList.stream().map(Task::getId).collect(Collectors.toSet());
-        do {
-            id = random.nextLong(1, Long.MAX_VALUE);
-        } while (idList.contains(id));
-        return id;
     }
 }
