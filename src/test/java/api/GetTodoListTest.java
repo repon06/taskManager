@@ -57,7 +57,7 @@ class GetTodoListTest extends BaseTest {
 
     @DisplayName("[negative] Get todo list with invalid offset/limit values")
     @Description("Get todo list with invalid offset/limit values")
-    @ParameterizedTest(name = "{0} {1}")
+    @ParameterizedTest(name = "offset: {0} limit: {1}")
     @MethodSource("invalidValuesProvider")
     void failGetTodoTest(int offset, int limit) {
         var actualResponse = given()

@@ -43,6 +43,7 @@ class CreateTodoTest extends BaseTest {
         given()
                 .spec(getSpecification())
                 .body(newTask)
+                .log().all()
                 .when()
                 .post()
                 .then().log().all()
@@ -55,7 +56,7 @@ class CreateTodoTest extends BaseTest {
 
     @DisplayName("[positive] Create todo test")
     @Description("Create todo test")
-    @ParameterizedTest(name = "{0} {1} {2}")
+    @ParameterizedTest(name = "id: {0} text:{1} completed:{2}")
     @MethodSource("normalFieldsProvider")
     void normalCreateTodoTest(Long id, String text, Boolean completed) {
         newTask = buildTask(id, text, completed);
@@ -74,7 +75,7 @@ class CreateTodoTest extends BaseTest {
 
     @DisplayName("[negative] Create todo with invalid value field test")
     @Description("Create todo with invalid value field test")
-    @ParameterizedTest(name = "{0} {1} {2}")
+    @ParameterizedTest(name = "id:{0} text:{1} completed:{2}")
     @MethodSource("invalidFieldsProvider")
     void failCreateTodoTest(Object id, Object text, Object completed, int code) {
         var newTask = buildInvalidTask(id, text, completed);

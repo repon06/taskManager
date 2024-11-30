@@ -4,6 +4,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -102,6 +103,7 @@ public class BaseTest {
 
     protected RequestSpecification getSpecification() {
         return new RequestSpecBuilder()
+                .addFilter(new AllureRestAssured())
                 .setBaseUri(baseUrl)
                 .setContentType(ContentType.JSON)
                 .log(LogDetail.ALL)
