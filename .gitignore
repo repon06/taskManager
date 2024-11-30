@@ -34,3 +34,4 @@ build
 ### VsCode ###
 **/.vscode
 **/bin
+/gradle/wrapper/gradle-wrapper.jar
