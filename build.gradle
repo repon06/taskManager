@@ -9,37 +9,30 @@ repositories {
 }
 
 dependencies {
-// Implementation dependencies
     implementation 'io.github.openfeign:feign-jackson:13.5'
     implementation 'io.rest-assured:json-schema-validator:5.5.0'
     implementation 'org.java-websocket:Java-WebSocket:1.5.7'
     implementation 'org.apache.commons:commons-configuration2:2.11.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    implementation 'org.testcontainers:testcontainers:1.20.4'
 
-// Compile-only dependencies
-    //compileOnly 'javax.websocket:javax.websocket-api:1.1'
     compileOnly 'org.projectlombok:lombok:1.18.36'
 
-// Annotation processor dependencies
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
-// Test dependencies
-    testImplementation 'org.testcontainers:testcontainers:1.20.4'
     testImplementation 'org.testcontainers:junit-jupiter:1.20.4'
     testImplementation 'io.qameta.allure:allure-junit5:2.29.0'
     testImplementation 'io.rest-assured:rest-assured:5.5.0'
     testImplementation 'io.qameta.allure:allure-rest-assured:2.13.8'
-    //testImplementation platform('org.junit:junit-bom:5.10.0')
-    //testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.3'
-
-// Commented-out dependencies (consider removing if not used)
-// implementation 'javax.websocket:javax.websocket-client-api:1.1'
-// implementation 'org.springframework:spring-websocket:6.2.0'
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (project.hasProperty('tags')) {
+            includeTags project.getProperty('tags')
+        }
+    }
 }
