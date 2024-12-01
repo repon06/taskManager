@@ -18,7 +18,6 @@ class WebSocketTest {
             @Override
             public void onMessage(String message) {
                 System.out.println("Received message: " + message);
-                // Verify the message content
             }
 
             @Override

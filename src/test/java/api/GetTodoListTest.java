@@ -99,8 +99,8 @@ class GetTodoListTest extends BaseTest {
         return Stream.of(
                 Arguments.of(-1, defaultLimit),
                 Arguments.of(defaultOffset, -1),
-                Arguments.of(defaultOffset, 0),//todo: negative offset
-                Arguments.of(taskList.size(), defaultLimit)//todo: negative offset
+                Arguments.of(defaultOffset, 0),//TODO: negative offset
+                Arguments.of(taskList.size(), defaultLimit)//TODO: negative offset
         );
     }
 }

@@ -30,7 +30,7 @@ class CreateTodoTest extends BaseTest {
 
     @AfterEach
     public void clean() {
-        //todo: очистить
+        //TODO: delete new task
     }
 
     @Tag("Smoke")
@@ -123,7 +123,7 @@ class CreateTodoTest extends BaseTest {
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(16332), true, HttpStatus.SC_REQUEST_TOO_LONG),
                 Arguments.of(getRandomAndNotExistId().toString(), RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
                 Arguments.of(getRandomAndNotExistId(), null, true, HttpStatus.SC_BAD_REQUEST),
-                //
+
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), null, HttpStatus.SC_BAD_REQUEST),
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), "true", HttpStatus.SC_BAD_REQUEST)
         );

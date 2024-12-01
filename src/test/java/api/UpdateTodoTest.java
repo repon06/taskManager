@@ -32,7 +32,6 @@ class UpdateTodoTest extends BaseTest {
     @Description("Update todo")
     @Test
     void normalUpdateTodoTest() {
-        //var oldTask = taskList.getFirst();
         var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
 
         given()
@@ -68,7 +67,7 @@ class UpdateTodoTest extends BaseTest {
                 .statusCode(statusCode)
                 .extract().response().asString();
 
-        //todo: expect to receive an error "Not found"?
+        //TODO: expect to receive an error "Not found"?
         MatcherAssert.assertThat("Error: actual message does not match the expected message",
                 actualResponse, Matchers.containsStringIgnoringCase(message));
     }
