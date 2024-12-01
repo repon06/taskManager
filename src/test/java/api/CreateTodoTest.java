@@ -21,11 +21,11 @@ import org.taskmanager.model.Task;
 
 class CreateTodoTest extends BaseTest {
     private Task newTask;
+    private Task firstTask;
 
     @BeforeAll
     public void setup() {
-        createTask();
-        taskList = getFullTaskList();
+        firstTask = createTask();
     }
 
     @AfterEach
@@ -58,7 +58,7 @@ class CreateTodoTest extends BaseTest {
     @Description("Create todo test")
     @ParameterizedTest(name = "id: {0} text:{1} completed:{2}")
     @MethodSource("normalFieldsProvider")
-    void normalCreateTodoTest(Long id, String text, Boolean completed) {
+    void normalParametrizedCreateTodoTest(Long id, String text, Boolean completed) {
         newTask = buildTask(id, text, completed);
         given()
                 .spec(getSpecification())
@@ -113,7 +113,8 @@ class CreateTodoTest extends BaseTest {
 
     public Stream<Arguments> invalidFieldsProvider() {
         return Stream.of(
-                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(firstTask.getId(), RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
+                Arguments.of(getRandomAndNotExistId(), firstTask.getText(), null, HttpStatus.SC_BAD_REQUEST),
 
                 Arguments.of(null, RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
                 Arguments.of(Long.MAX_VALUE + 1, RandomStringUtils.randomAlphanumeric(10), true, HttpStatus.SC_BAD_REQUEST),
@@ -124,10 +125,7 @@ class CreateTodoTest extends BaseTest {
                 Arguments.of(getRandomAndNotExistId(), null, true, HttpStatus.SC_BAD_REQUEST),
                 //
                 Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), null, HttpStatus.SC_BAD_REQUEST),
-                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), "true", HttpStatus.SC_BAD_REQUEST),
-
-                Arguments.of(taskList.getFirst().getId(), RandomStringUtils.randomAlphanumeric(10), null, HttpStatus.SC_BAD_REQUEST),
-                Arguments.of(getRandomAndNotExistId(), taskList.getFirst().getText(), null, HttpStatus.SC_BAD_REQUEST)
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), "true", HttpStatus.SC_BAD_REQUEST)
         );
     }
 }

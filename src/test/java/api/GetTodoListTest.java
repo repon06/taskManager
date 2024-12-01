@@ -37,7 +37,6 @@ class GetTodoListTest extends BaseTest {
     @Description("Get todo list")
     @Test
     void normalGetTodoTest() {
-
         var actualResponse = Arrays.stream(given()
                 .spec(getSpecification())
                 .param(OFFSET.getName(), defaultOffset)
