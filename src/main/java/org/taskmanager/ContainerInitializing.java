@@ -1,5 +1,6 @@
 package org.taskmanager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.api.model.ExposedPort;
@@ -18,6 +19,11 @@ public class ContainerInitializing {
     }
 
     private String loadDockerImage(String imagePath) throws IOException, InterruptedException {
+        File imageFile = new File(imagePath);
+        if (!imageFile.exists() || !imageFile.isFile()) {
+            throw new IllegalArgumentException("File not found or invalid: " + imagePath);
+        }
+
         ProcessBuilder processBuilder = new ProcessBuilder("docker", "load", "--input", imagePath);
         Process process = processBuilder.start();
 
