@@ -14,6 +14,7 @@
 ```
 
 ```
+startup parameters are optional - by default they are taken from the config
 	- imagePath: Docker-image path .<br>
 	- ports.host: Port on the host for forwarding.<br>
 	- ports.container: The port inside the container.<br>
