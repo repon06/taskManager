@@ -60,3 +60,4 @@ existing tags: api, websocket, get, delete, update, create
 ```
 allure serve
 ```
+You must have allure report: https://allurereport.org/docs/install/
