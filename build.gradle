@@ -31,7 +31,15 @@ dependencies {
 
 tasks.named('test') {
     doFirst {
-        delete file("${projectDir}/allure-results")
+        if (project.hasProperty('cleanAllure') && project.cleanAllure.toBoolean()) {
+            def allureResultsDir = file("${projectDir}/allure-results")
+            if (allureResultsDir.exists()) {
+                delete allureResultsDir
+                println "Deleted existing allure-results directory as cleanAllure is true."
+            }
+        } else {
+            println "Skipped deletion of allure-results directory."
+        }
     }
 }
 

@@ -1,5 +1,9 @@
 # Todo-app testing project
 
+You must have Docker report: https://www.docker.com/products/docker-desktop/
+
+The project itself deploys the docker image of the application
+
 ### Execute tests with parameters:
 
 ```
@@ -11,16 +15,18 @@
 -Durls.websocket=ws://localhost:8080/ws 
 -Dcredentials.username=admin 
 -Dcredentials.password=admin
+-PcleanAllure=true 
 ```
 
 ```
-startup parameters are optional - by default they are taken from the config
 	- imagePath: Docker-image path.
-	- ports.host: Port on the host for forwarding.
-	- ports.container: The port inside the container.
-	- urls.base: Base URL API.
-	- urls.websocket: WebSocket URL.
-	- credentials.username & credentials.password: Authorization data.
+        startup parameters are optional - by default they are taken from the config
+	- ports.host: Port on the host for forwarding. (optional)
+	- ports.container: The port inside the container. (optional)
+	- urls.base: Base URL API. (optional)
+	- urls.websocket: WebSocket URL. (optional)
+	- credentials.username & credentials.password: Authorization data. (optional)
+	- cleanAllure=true: for cleaning the allure-results directory. (optional)
 ```
 
 ### Execute all tests:
@@ -60,4 +66,13 @@ existing tags: api, websocket, get, delete, update, create
 ```
 allure serve
 ```
+
 You must have allure report: https://allurereport.org/docs/install/
+
+# Load testing
+
+#### Build project for load testing:
+
+```
+./gradlew clean build
+```
