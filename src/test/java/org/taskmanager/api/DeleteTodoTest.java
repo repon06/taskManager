@@ -1,4 +1,4 @@
-package api;
+package org.taskmanager.api;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItem;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.taskmanager.BaseTest;
 import org.taskmanager.model.Task;
 
 class DeleteTodoTest extends BaseTest {

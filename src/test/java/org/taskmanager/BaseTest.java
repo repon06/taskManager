@@ -1,4 +1,4 @@
-package api;
+package org.taskmanager;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static io.restassured.RestAssured.given;
@@ -22,13 +22,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.taskmanager.ConfigLoader;
-import org.taskmanager.ContainerInitializing;
 import org.taskmanager.model.InvalidTask;
 import org.taskmanager.model.Task;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BaseTest {
+public class BaseTest {
     private static int containerPort;
     private static int hostPort;
     private static String baseUrl;

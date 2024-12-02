@@ -1,4 +1,4 @@
-package api;
+package org.taskmanager.api;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.taskmanager.BaseTest;
 import org.taskmanager.model.Task;
 
 class UpdateTodoTest extends BaseTest {
@@ -32,6 +33,28 @@ class UpdateTodoTest extends BaseTest {
     @Description("Update todo")
     @Test
     void normalUpdateTodoTest() {
+        var newTask = buildTask(oldTask.getId(), RandomStringUtils.randomAlphanumeric(10), true);
+
+        given()
+                .spec(getSpecificationWithAuth())
+                .body(newTask)
+                .when()
+                .put(oldTask.getId().toString())
+                .then().log().all()
+                .statusCode(HttpStatus.SC_OK);
+
+        var actualTask = getFullTaskList().stream().filter(i -> i.getId().equals(oldTask.getId()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Task with ID " + newTask.getId() + " not found."));
+
+        MatcherAssert.assertThat("Error: actual task do not equal new task",
+                actualTask, equalTo(newTask));
+    }
+
+    @DisplayName("[negative] Update todo")
+    @Description("Update todo")
+    @Test
+    void normalUpdateTodoWithIdTest() {
         var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
 
         given()
