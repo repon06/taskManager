@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -13,6 +15,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,6 +23,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.taskmanager.BaseTest;
 import org.taskmanager.model.Task;
 
+@Tags({@Tag("api"), @Tag("update")})
+@Epic("API tests")
+@Feature("UPDATE todo test")
+@DisplayName("UPDATE todo test")
 class UpdateTodoTest extends BaseTest {
     private Task oldTask;
 

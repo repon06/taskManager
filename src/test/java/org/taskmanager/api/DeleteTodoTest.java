@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import java.util.List;
 import java.util.stream.Stream;
 import org.apache.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,6 +23,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.taskmanager.BaseTest;
 import org.taskmanager.model.Task;
 
+@Tags({@Tag("api"), @Tag("delete")})
+@Epic("API tests")
+@Feature("Delete todo test")
+@DisplayName("Delete todo test")
 class DeleteTodoTest extends BaseTest {
     private List<Task> taskList;
 

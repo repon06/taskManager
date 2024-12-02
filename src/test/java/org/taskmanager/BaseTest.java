@@ -30,6 +30,7 @@ public class BaseTest {
     private static int containerPort;
     private static int hostPort;
     private static String baseUrl;
+    protected static String wsUrl;
     private static String username;
     private static String password;
 
@@ -42,9 +43,12 @@ public class BaseTest {
         String imagePath = config.getString("imagePath");
         containerPort = config.getInt("ports.container");
         hostPort = config.getInt("ports.host");
+
         baseUrl = config.getString("urls.base");
         username = config.getString("credentials.username");
         password = config.getString("credentials.password");
+
+        wsUrl = config.getString("urls.websocket");
 
         container.initialize(imagePath, containerPort, hostPort);
     }
@@ -55,7 +59,7 @@ public class BaseTest {
     }
 
     @Test
-    void testContainer() {
+    void checkTestContainerTest() {
         Assertions.assertTrue(container.isRunning(), "Container is not running");
 
         var port = container.getFirstMappedPort();
@@ -105,6 +109,27 @@ public class BaseTest {
                 .then().log().all()
                 .statusCode(HttpStatus.SC_CREATED);
         return newTask;
+    }
+
+    protected void deleteTask(long taskId) {
+        given()
+                .spec(getSpecificationWithAuth())
+                .when()
+                .delete(String.valueOf(taskId))
+                .then().log().all()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    protected void updateTask(long taskId) {
+        var newTask = buildTask(taskId, RandomStringUtils.randomAlphanumeric(10), true);
+
+        given()
+                .spec(getSpecificationWithAuth())
+                .body(newTask)
+                .when()
+                .put(String.valueOf(taskId))
+                .then().log().all()
+                .statusCode(HttpStatus.SC_OK);
     }
 
     protected Long getRandomAndNotExistId() {
