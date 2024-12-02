@@ -15,12 +15,12 @@
 
 ```
 startup parameters are optional - by default they are taken from the config
-	- imagePath: Docker-image path .<br>
-	- ports.host: Port on the host for forwarding.<br>
-	- ports.container: The port inside the container.<br>
-	- urls.base: Base URL API.<br>
-	- urls.websocket: WebSocket URL.<br>
-	- credentials.username & credentials.password: Authorization data.<br>
+	- imagePath: Docker-image path.
+	- ports.host: Port on the host for forwarding.
+	- ports.container: The port inside the container.
+	- urls.base: Base URL API.
+	- urls.websocket: WebSocket URL.
+	- credentials.username & credentials.password: Authorization data.
 ```
 
 ### Execute all tests:
