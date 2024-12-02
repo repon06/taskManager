@@ -1,4 +1,5 @@
 # Todo-app testing project
+You must have Docker report: https://www.docker.com/products/docker-desktop/
 
 ### Execute tests with parameters:
 
@@ -61,3 +62,9 @@ existing tags: api, websocket, get, delete, update, create
 allure serve
 ```
 You must have allure report: https://allurereport.org/docs/install/
+
+# Load testing
+#### Build project for load testing:
+```
+./gradlew clean build
+```
