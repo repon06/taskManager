@@ -1,11 +1,5 @@
 # Todo-app testing project
 
-### Execute all tests:
-
-```
-./gradlew clean test
- ```
-
 ### Execute tests with parameters:
 
 ```
@@ -27,10 +21,38 @@
 	- urls.websocket: WebSocket URL.<br>
 	- credentials.username & credentials.password: Authorization data.<br>
 ```
+
+### Execute all tests:
+
+```
+./gradlew clean test
+ ```
+
 ### Execute only Smoke tag tests:
+
 ```
 ./gradlew clean test -Ptags=Smoke
 ```
+
+#### Execute only api tests:
+
+```
+./gradlew clean test -Ptags=api
+```
+
+#### Execute only websocket tests:
+
+```
+./gradlew clean test -Ptags=websocket
+```
+
+##### Execute websocket + delete tests:
+
+```
+./gradlew clean test -Ptags=websocket,delete,update
+```
+
+existing tags: api, websocket, get, delete, update, create
 
 ## Generating an allure report:
 
