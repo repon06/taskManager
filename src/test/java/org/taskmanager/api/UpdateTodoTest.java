@@ -13,6 +13,7 @@ import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
@@ -102,7 +103,7 @@ class UpdateTodoTest extends BaseTest {
                 actualResponse, Matchers.containsStringIgnoringCase(message));
     }
 
-    //TODO: all requests should be auth??? + invalid auth tests
+    //TODO: all requests should be auth???
     @DisplayName("[negative] Update without auth todo")
     @Description("Update without auth todo")
     @Test
@@ -125,6 +126,14 @@ class UpdateTodoTest extends BaseTest {
 
         MatcherAssert.assertThat("Error: actual task do not equal new task",
                 actualTask, equalTo(newTask));
+    }
+
+    @Disabled("todo")
+    @DisplayName("[negative] Update todo with invalid authorization")
+    @Description("Update todo with invalid authorization")
+    @Test
+    void failUpdateTodoWithInvalidAuthTest() {
+        //TODO: invalid auth tests
     }
 
     @DisplayName("[positive] Update todo test")

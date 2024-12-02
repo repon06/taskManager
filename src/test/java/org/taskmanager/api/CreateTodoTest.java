@@ -12,6 +12,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
@@ -98,6 +99,22 @@ class CreateTodoTest extends BaseTest {
 
         MatcherAssert.assertThat("Error: actual message does not match the expected message",
                 actualResponse, Matchers.containsStringIgnoringCase(message));
+    }
+
+    @Disabled("todo")
+    @DisplayName("[negative] Create without auth todo")
+    @Description("Create without auth todo")
+    @Test
+    void failCreateWithoutAuthTodoTest() {
+        //TODO: invalid auth tests
+    }
+
+    @Disabled("todo")
+    @DisplayName("[negative] Create todo with invalid authorization")
+    @Description("Create todo with invalid authorization")
+    @Test
+    void failCreateTodoWithInvalidAuthTest() {
+        //TODO: invalid auth tests
     }
 
     public Stream<Arguments> normalFieldsProvider() {

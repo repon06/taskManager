@@ -83,7 +83,7 @@ class DeleteTodoTest extends BaseTest {
         var task = taskList.getFirst();
 
         given()
-                .spec(getSpecificationWithAuth("qwerty","qwerty"))
+                .spec(getSpecificationWithAuth("qwerty", "qwerty"))
                 .when()
                 .delete(task.getId().toString())
                 .then().log().all()

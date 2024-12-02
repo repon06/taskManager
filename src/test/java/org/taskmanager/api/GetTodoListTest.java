@@ -14,6 +14,7 @@ import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
@@ -120,6 +121,22 @@ class GetTodoListTest extends BaseTest {
 
         MatcherAssert.assertThat("Error: actual list do not contains limit task list",
                 actualResponse, Matchers.equalTo(expectedTodoList));
+    }
+
+    @Disabled("todo")
+    @DisplayName("[negative] Get todo list without auth todo")
+    @Description("Get todo list without auth todo")
+    @Test
+    void failGetWithoutAuthTodoTest() {
+        //TODO: invalid auth tests
+    }
+
+    @Disabled("todo")
+    @DisplayName("[negative] Get todo list with invalid authorization")
+    @Description("Get todo list with invalid authorization")
+    @Test
+    void failGetTodoWithInvalidAuthTest() {
+        //TODO: invalid auth tests
     }
 
     public Stream<Arguments> invalidValuesProvider() {
