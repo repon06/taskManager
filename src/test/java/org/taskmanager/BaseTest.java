@@ -75,9 +75,13 @@ public class BaseTest {
                 .build();
     }
 
-    protected RequestSpecification getSpecificationWithAuth() {
+    protected RequestSpecification getSpecificationWithAuth(String username, String password) {
         return getSpecification()
                 .auth().preemptive().basic(username, password);
+    }
+
+    protected RequestSpecification getSpecificationWithAuth() {
+        return getSpecificationWithAuth(username, password);
     }
 
     protected String checkSchema(String fileName) {

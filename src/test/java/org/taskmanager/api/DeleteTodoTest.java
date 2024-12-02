@@ -76,6 +76,25 @@ class DeleteTodoTest extends BaseTest {
                 taskList, hasItem(task));
     }
 
+    @DisplayName("[negative] Delete todo with invalid authorization")
+    @Description("Delete todo with invalid authorization")
+    @Test
+    void failDeleteTodoWithInvalidAuthTest() {
+        var task = taskList.getFirst();
+
+        given()
+                .spec(getSpecificationWithAuth("qwerty","qwerty"))
+                .when()
+                .delete(task.getId().toString())
+                .then().log().all()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED);
+
+        taskList = getFullTaskList();
+
+        MatcherAssert.assertThat("Error: actual list do not contains new task",
+                taskList, hasItem(task));
+    }
+
     @DisplayName("[negative] Delete not exist todo")
     @Description("Delete not exist todo")
     @ParameterizedTest(name = "Task ID: {0}")

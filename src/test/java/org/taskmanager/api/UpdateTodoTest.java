@@ -58,8 +58,8 @@ class UpdateTodoTest extends BaseTest {
                 actualTask, equalTo(newTask));
     }
 
-    @DisplayName("[negative] Update todo")
-    @Description("Update todo")
+    @DisplayName("[negative] Update with id todo")
+    @Description("Update with id todo")
     @Test
     void normalUpdateTodoWithIdTest() {
         var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
@@ -100,6 +100,104 @@ class UpdateTodoTest extends BaseTest {
         //TODO: expect to receive an error "Not found"?
         MatcherAssert.assertThat("Error: actual message does not match the expected message",
                 actualResponse, Matchers.containsStringIgnoringCase(message));
+    }
+
+    //TODO: all requests should be auth??? + invalid auth tests
+    @DisplayName("[negative] Update without auth todo")
+    @Description("Update without auth todo")
+    @Test
+    void failUpdateWithoutAuthTodoTest() {
+        var newTask = buildTask(oldTask.getId(), RandomStringUtils.randomAlphanumeric(10), true);
+
+        given()
+                .spec(getSpecification())
+                .body(newTask)
+                .when()
+                .put(oldTask.getId().toString())
+                .then().log().all()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
+                .extract().response().asString();
+
+        //TODO: check not changed?
+        var actualTask = getFullTaskList().stream().filter(i -> i.getId().equals(oldTask.getId()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Task with ID " + newTask.getId() + " not found."));
+
+        MatcherAssert.assertThat("Error: actual task do not equal new task",
+                actualTask, equalTo(newTask));
+    }
+
+    @DisplayName("[positive] Update todo test")
+    @Description("Update todo test")
+    @ParameterizedTest(name = "text:{0} completed:{1}")
+    @MethodSource("normalFieldsProvider")
+    void normalParametrizedUpdateTodoTest(String text, Boolean completed) {
+        var newTask = buildTask(oldTask.getId(), text, completed);
+
+        given()
+                .spec(getSpecificationWithAuth())
+                .body(newTask)
+                .when()
+                .put(oldTask.getId().toString())
+                .then().log().all()
+                .statusCode(HttpStatus.SC_OK);
+
+        taskList = getFullTaskList();
+
+        MatcherAssert.assertThat("Error: actual list do not contains new task", taskList, Matchers.hasItem(newTask));
+    }
+
+    @DisplayName("[negative] Update todo with invalid value field test")
+    @Description("Update todo with invalid value field test")
+    @ParameterizedTest(name = "text:{0} completed:{1}")
+    @MethodSource("invalidFieldsProvider")
+    void failUpdateTodoTest(Object text, Object completed, int code, String message) {
+        var newTask = buildInvalidTask(oldTask.getId(), text, completed);
+
+        var actualResponse = given()
+                .spec(getSpecificationWithAuth())
+                .body(newTask)
+                .when()
+                .put(oldTask.getId().toString())
+                .then().log().all()
+                .statusCode(code)
+                .extract().response().asString();
+
+        MatcherAssert.assertThat("Error: actual message does not match the expected message",
+                actualResponse, Matchers.containsStringIgnoringCase(message));
+    }
+
+    public Stream<Arguments> normalFieldsProvider() {
+        var description = RandomStringUtils.randomAlphanumeric(10);
+        return Stream.of(
+                Arguments.of(description, false),
+                Arguments.of(RandomStringUtils.randomAlphanumeric(16331), true),
+                Arguments.of(RandomStringUtils.random(10), true),
+
+                Arguments.of("; DROP TABLE users; ", true),
+                Arguments.of(" OR '1'='1 ", true),
+                Arguments.of("%_\\", true),
+                Arguments.of("<iframe src=\"http://google.com\"></iframe>", true),
+                Arguments.of("<script>alert('XSS');</script>", true),
+                Arguments.of("alert('XSS')", true),
+                Arguments.of("", true)
+        );
+    }
+
+    public Stream<Arguments> invalidFieldsProvider() {
+        var description = RandomStringUtils.randomAlphanumeric(10);
+        return Stream.of(
+                Arguments.of(RandomStringUtils.randomAlphanumeric(16333), true,
+                        HttpStatus.SC_REQUEST_TOO_LONG, "The request payload is too large"),
+
+                Arguments.of(null, true,
+                        HttpStatus.SC_BAD_REQUEST, "invalid type: null, expected a string at line 1"),
+
+                Arguments.of(description, null,
+                        HttpStatus.SC_BAD_REQUEST, "invalid type: null, expected a boolean at line 1"),
+                Arguments.of(description, "true",
+                        HttpStatus.SC_BAD_REQUEST, "invalid type: string \"true\", expected a boolean at line 1")
+        );
     }
 
     public Stream<Arguments> invalidIdValueProvider() {

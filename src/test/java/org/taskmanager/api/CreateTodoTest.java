@@ -101,24 +101,24 @@ class CreateTodoTest extends BaseTest {
     }
 
     public Stream<Arguments> normalFieldsProvider() {
-        var uniqueId = getRandomAndNotExistId();
         var description = RandomStringUtils.randomAlphanumeric(10);
         return Stream.of(
                 Arguments.of(0L, description, true),
                 Arguments.of(Long.MAX_VALUE, description, true),
-                Arguments.of(uniqueId, description, true),
+                Arguments.of(getRandomAndNotExistId(), description, true),
 
-                Arguments.of(uniqueId, description, false),
-                Arguments.of(uniqueId, RandomStringUtils.randomAlphanumeric(16331), true),
-                Arguments.of(uniqueId, RandomStringUtils.random(10), true),
+                Arguments.of(getRandomAndNotExistId(), description, false),
+                Arguments.of(getRandomAndNotExistId(), firstTask.getText(), false),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(16331), true),
+                Arguments.of(getRandomAndNotExistId(), RandomStringUtils.random(10), true),
 
-                Arguments.of(uniqueId, "; DROP TABLE users; ", true),
-                Arguments.of(uniqueId, " OR '1'='1 ", true),
-                Arguments.of(uniqueId, "%_\\", true),
-                Arguments.of(uniqueId, "<iframe src=\"http://google.com\"></iframe>", true),
-                Arguments.of(uniqueId, "<script>alert('XSS');</script>", true),
-                Arguments.of(uniqueId, "alert('XSS')", true),
-                Arguments.of(uniqueId, "", true)
+                Arguments.of(getRandomAndNotExistId(), "; DROP TABLE users; ", true),
+                Arguments.of(getRandomAndNotExistId(), " OR '1'='1 ", true),
+                Arguments.of(getRandomAndNotExistId(), "%_\\", true),
+                Arguments.of(getRandomAndNotExistId(), "<iframe src=\"http://google.com\"></iframe>", true),
+                Arguments.of(getRandomAndNotExistId(), "<script>alert('XSS');</script>", true),
+                Arguments.of(getRandomAndNotExistId(), "alert('XSS')", true),
+                Arguments.of(getRandomAndNotExistId(), "", true)
         );
     }
 
@@ -128,8 +128,6 @@ class CreateTodoTest extends BaseTest {
         return Stream.of(
                 Arguments.of(firstTask.getId(), description, true,
                         HttpStatus.SC_BAD_REQUEST, ""),
-                Arguments.of(uniqueId, firstTask.getText(), null,
-                        HttpStatus.SC_BAD_REQUEST, "invalid type: null, expected a boolean at line 1"),
 
                 Arguments.of(null, description, true,
                         HttpStatus.SC_BAD_REQUEST, "invalid type: null, expected u64 at line 1"),
