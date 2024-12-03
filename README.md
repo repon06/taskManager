@@ -81,9 +81,9 @@ allure serve
 
 If you must have allure report: https://allurereport.org/docs/install/
 
-# Load testing
+~~# Load testing~~
 
-#### Build project for load testing:
+~~#### Build project for load testing:~~
 
 ```
 ./gradlew clean build
