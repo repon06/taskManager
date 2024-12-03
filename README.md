@@ -63,11 +63,23 @@ existing tags: api, websocket, get, delete, update, create
 
 ## Generating an allure report:
 
+##### Show allure report:
+
+```
+./gradlew allureServe
+```
+
+##### Generate local allure report: build/reports/allure-report/allureReport
+
+```
+./gradlew allureReport
+```
+
 ```
 allure serve
 ```
 
-You must have allure report: https://allurereport.org/docs/install/
+If you must have allure report: https://allurereport.org/docs/install/
 
 # Load testing
 
@@ -75,4 +87,6 @@ You must have allure report: https://allurereport.org/docs/install/
 
 ```
 ./gradlew clean build
+./gradlew clean jarWithTests
+./gradlew clean jar
 ```
