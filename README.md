@@ -1,17 +1,49 @@
 # Todo-app testing project
 
-The project is developed in java and java 16+ is required to run it: https://www.oracle.com/java/technologies/downloads/
+## Project Description
+
+This project contains automated tests for the Todo Application.
+The tests are written in Java and verify the application's functionality, including creating/updating/deleting tasks and
+retrieving the task list,
+and ensuring the WebSocket connection works to receive real-time updates about new tasks.
+
+## Project Structure
+
+## Environment requirements:
+
+- **Java Development Kit (JDK)** version 15+ : https://www.oracle.com/java/technologies/downloads/
+
 ```shell
 brew install java
 java -version
 ```
-You must have Docker report: https://www.docker.com/products/docker-desktop/
-The project itself deploys the docker image of the application
+
+- **Build system**: Gradle
+- **Docker**: Required to run tests in a containerized environment: https://www.docker.com/products/docker-desktop/
+
 ```shell
 brew install docker
+```
+
+## Installation and Usage:
+
+1. **Clone the repository**:
+
+```shell
+git clone https://github.com/repon06/taskManager.git
+cd <project directory>
+```
+
+2. **Ensure Docker is installed and running**:
+
+```shell
+docker --version
 docker info
 ```
-### Execute tests with parameters:
+
+3. **Run tests**:
+
+   ### Execute tests with parameters:
 
 ```shell
 ./gradlew clean test 
@@ -67,6 +99,8 @@ docker info
 ```
 
 existing tags: api, websocket, get, delete, update, create
+
+4. **Report generation**:
 
 ## Generating an allure report:
 
