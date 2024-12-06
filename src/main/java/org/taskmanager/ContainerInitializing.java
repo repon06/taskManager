@@ -1,12 +1,13 @@
 package org.taskmanager;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
-import org.apache.commons.compress.utils.FileNameUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -33,7 +34,8 @@ public class ContainerInitializing {
         }
 
         System.out.println("Docker image loaded successfully: " + imagePath);
-        return FileNameUtils.getBaseName(imagePath);
+
+        return extractImageIdFromDockerLoadOutput(process);
     }
 
     private void startContainer(String imageName, int containerPort, int hostPort) {
@@ -47,6 +49,19 @@ public class ContainerInitializing {
 
         todoAppContainer.start();
         System.out.println("Container started successfully on host port: " + hostPort);
+    }
+
+    private String extractImageIdFromDockerLoadOutput(Process process) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Loaded image:")) {
+                    String[] parts = line.split(":");
+                    return parts[1].trim();
+                }
+            }
+        }
+        throw new RuntimeException("Failed to extract image ID from Docker load output.");
     }
 
     public Integer getFirstMappedPort() {

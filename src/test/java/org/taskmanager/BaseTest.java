@@ -39,16 +39,17 @@ public class BaseTest {
 
     @BeforeAll
     public void initialize() throws Exception {
-        Configuration config = ConfigLoader.loadConfig("config.json");
-        String imagePath = config.getString("imagePath");
-        containerPort = config.getInt("ports.container");
-        hostPort = config.getInt("ports.host");
+        ConfigLoader.loadConfig("config.json");
 
-        baseUrl = config.getString("urls.base");
-        username = config.getString("credentials.username");
-        password = config.getString("credentials.password");
+        String imagePath = ConfigLoader.getProperty("imagePath");
+        containerPort = ConfigLoader.getIntProperty("ports.container");
+        hostPort = ConfigLoader.getIntProperty("ports.host");
 
-        wsUrl = config.getString("urls.websocket");
+        baseUrl = ConfigLoader.getProperty("urls.base");
+        username = ConfigLoader.getProperty("credentials.username");
+        password = ConfigLoader.getProperty("credentials.password");
+
+        wsUrl = ConfigLoader.getProperty("urls.websocket");
 
         container.initialize(imagePath, containerPort, hostPort);
     }
