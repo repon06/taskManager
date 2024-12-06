@@ -34,15 +34,10 @@ dependencies {
 
 test {
     useJUnitPlatform {
+        systemProperties System.getProperties()
         if (project.hasProperty('tags')) {
             def tags = project.tags.split(',')
             includeTags(tags)
         }
     }
-}
-
-// use: ./gradlew jarWithTests
-task jarWithTests(type: Jar) {
-    archiveClassifier.set('tests')
-    from sourceSets.test.output
 }
