@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterAll;
@@ -39,16 +38,17 @@ public class BaseTest {
 
     @BeforeAll
     public void initialize() throws Exception {
-        Configuration config = ConfigLoader.loadConfig("config.json");
-        String imagePath = config.getString("imagePath");
-        containerPort = config.getInt("ports.container");
-        hostPort = config.getInt("ports.host");
+        ConfigLoader.loadConfig("config.json");
 
-        baseUrl = config.getString("urls.base");
-        username = config.getString("credentials.username");
-        password = config.getString("credentials.password");
+        String imagePath = ConfigLoader.getProperty("imagePath");
+        containerPort = ConfigLoader.getIntProperty("ports.container");
+        hostPort = ConfigLoader.getIntProperty("ports.host");
 
-        wsUrl = config.getString("urls.websocket");
+        baseUrl = ConfigLoader.getProperty("urls.base");
+        username = ConfigLoader.getProperty("credentials.username");
+        password = ConfigLoader.getProperty("credentials.password");
+
+        wsUrl = ConfigLoader.getProperty("urls.websocket");
 
         container.initialize(imagePath, containerPort, hostPort);
     }
@@ -104,7 +104,8 @@ public class BaseTest {
     }
 
     protected Task createTask() {
-        var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        var newTask = buildTask();
+
         given()
                 .spec(getSpecification())
                 .body(newTask)
@@ -155,6 +156,10 @@ public class BaseTest {
                 .text(text)
                 .completed(completed)
                 .build();
+    }
+
+    protected Task buildTask() {
+        return buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
     }
 
     protected InvalidTask buildInvalidTask(Object id, Object text, Object completed) {

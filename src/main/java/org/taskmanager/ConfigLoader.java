@@ -10,8 +10,11 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 public class ConfigLoader {
     private static Configuration config;
 
-    public static Configuration loadConfig(String resourcePath) throws ConfigurationException {
-        if (config != null) return config;
+    private ConfigLoader() {
+    }
+
+    public static void loadConfig(String resourcePath) throws ConfigurationException {
+        if (config != null) return;
 
         Parameters params = new Parameters();
         URL resourceUrl = ConfigLoader.class.getClassLoader().getResource(resourcePath);
@@ -24,18 +27,19 @@ public class ConfigLoader {
                         .configure(params.fileBased().setURL(resourceUrl));
 
         config = builder.getConfiguration();
-        return config;
     }
 
-    public static String getProperty(String key, String defaultValue) {
-        return System.getProperty(key, config != null
-                ? config.getString(key, defaultValue)
-                : defaultValue);
+    public static String getProperty(String key) {
+        if (config == null) {
+            throw new IllegalStateException("Configuration is not initialized. Please load the configuration first.");
+        }
+        return System.getProperty(key, config.getString(key));
     }
 
-    public static int getIntProperty(String key, int defaultValue) {
-        return Integer.parseInt(System.getProperty(key, config != null
-                ? config.getString(key, String.valueOf(defaultValue))
-                : String.valueOf(defaultValue)));
+    public static int getIntProperty(String key) {
+        if (config == null) {
+            throw new IllegalStateException("Configuration is not initialized. Please load the configuration first.");
+        }
+        return Integer.parseInt(System.getProperty(key, config.getString(key)));
     }
 }
