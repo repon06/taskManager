@@ -27,7 +27,7 @@ import org.taskmanager.model.Task;
 @Epic("API tests")
 @Feature("Delete todo test")
 @DisplayName("Delete todo test")
-public class DeleteTodoTest extends BaseTest {
+class DeleteTodoTest extends BaseTest {
     private List<Task> taskList;
 
     @BeforeAll
@@ -41,7 +41,7 @@ public class DeleteTodoTest extends BaseTest {
     @DisplayName("[positive] Delete todo")
     @Description("Delete todo")
     @Test
-    public void normalDeleteTodoTest() {
+    void normalDeleteTodoTest() {
         var task = taskList.getFirst();
 
         given()
