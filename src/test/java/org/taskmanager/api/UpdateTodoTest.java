@@ -63,7 +63,7 @@ class UpdateTodoTest extends BaseTest {
     @Description("Update with id todo")
     @Test
     void normalUpdateTodoWithIdTest() {
-        var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        var newTask = buildTask();
 
         given()
                 .spec(getSpecificationWithAuth())
@@ -87,7 +87,7 @@ class UpdateTodoTest extends BaseTest {
     @ParameterizedTest(name = "Task ID: {0}")
     @MethodSource("invalidIdValueProvider")
     void failUpdateNotExistTodoTest(Object taskId, int statusCode, String message) {
-        var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        var newTask = buildTask();
 
         var actualResponse = given()
                 .spec(getSpecificationWithAuth())

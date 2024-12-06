@@ -104,7 +104,8 @@ public class BaseTest {
     }
 
     protected Task createTask() {
-        var newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        var newTask = buildTask();
+
         given()
                 .spec(getSpecification())
                 .body(newTask)
@@ -155,6 +156,10 @@ public class BaseTest {
                 .text(text)
                 .completed(completed)
                 .build();
+    }
+
+    protected Task buildTask() {
+        return buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
     }
 
     protected InvalidTask buildInvalidTask(Object id, Object text, Object completed) {

@@ -46,7 +46,7 @@ class CreateTodoTest extends BaseTest {
     @Description("Create todo test")
     @Test
     void normalCreateTodoTest() {
-        newTask = buildTask(getRandomAndNotExistId(), RandomStringUtils.randomAlphanumeric(10), true);
+        newTask = buildTask();
 
         given()
                 .spec(getSpecification())
