@@ -54,7 +54,6 @@ docker info
 -Durls.websocket=ws://localhost:8080/ws 
 -Dcredentials.username=admin 
 -Dcredentials.password=admin
--PcleanAllure=true 
 ```
 
 ```information
