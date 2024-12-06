@@ -30,24 +30,16 @@ public class ConfigLoader {
     }
 
     public static String getProperty(String key) {
-        String systemValue = System.getProperty(key);
-        if (systemValue != null) {
-            return systemValue;
+        if (config == null) {
+            throw new IllegalStateException("Configuration is not initialized. Please load the configuration first.");
         }
-        if (config != null) {
-            return config.getString(key);
-        }
-        throw new IllegalArgumentException("Property not found: " + key);
+        return System.getProperty(key, config.getString(key));
     }
 
     public static int getIntProperty(String key) {
-        String systemValue = System.getProperty(key);
-        if (systemValue != null) {
-            return Integer.parseInt(systemValue);
+        if (config == null) {
+            throw new IllegalStateException("Configuration is not initialized. Please load the configuration first.");
         }
-        if (config != null) {
-            return config.getInt(key);
-        }
-        throw new IllegalArgumentException("Property not found: " + key);
+        return Integer.parseInt(System.getProperty(key, config.getString(key)));
     }
 }
